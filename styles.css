@@ -302,6 +302,48 @@ nav a:hover::after {
   display: block;
 }
 
+#about {
+  display: none;
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - 72px);
+  padding: 120px 0 110px;
+  background: white;
+}
+
+#about.page-visible {
+  display: block;
+}
+
+.about-inner {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.section-label {
+  margin: 0 0 34px;
+  color: #52657a;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.about-inner h2 {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 0.95;
+}
+
+.about-copy {
+  max-width: 500px;
+  margin: 52px 0 0;
+  color: #454545;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
 .projects-inner {
   width: min(1180px, 100%);
   margin: 0 auto;
@@ -471,19 +513,18 @@ nav a:hover::after {
   position: relative;
   top: -40px;
   display: inline-block;
+  width: min(100%, calc(100vw - 40px));
+  text-align: center;
 }
 
 #name3d {
   position: relative;
   display: inline-block;
+  max-width: 100%;
   white-space: nowrap;
   transform-style: preserve-3d;
   transition: transform 100ms ease-out;
   cursor: default;
-}
-
-#name3d.is-typing .shadows {
-  opacity: 0;
 }
 
 #name3d.is-typing h1::after {
@@ -517,26 +558,10 @@ nav a:hover::after {
   letter-spacing: -0.08em;
   font-weight: 700;
   white-space: nowrap;
-  text-align: left;
+  text-align: center;
+  overflow: visible;
+  line-height: 1;
   transition: transform 100ms ease-out;
-}
-
-.shadows {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  color: #bdbdbd;
-  pointer-events: none;
-  transition: transform 100ms ease-out;
-}
-
-.shadows span {
-  position: absolute;
-  inset: 0;
-  font-size: clamp(3rem, 10vw, 9rem);
-  line-height: 0.9;
-  letter-spacing: -0.08em;
-  font-weight: 700;
 }
 
 .description {
@@ -559,8 +584,7 @@ nav a:hover::after {
   }
 
   #name3d,
-  #text3d h1,
-  .shadows {
+  #text3d h1 {
     transition: none;
   }
 }
@@ -581,6 +605,10 @@ nav a:hover::after {
 
   #projects {
     padding-top: 58px;
+  }
+
+  #about {
+    padding-top: 80px;
   }
 
   .project-card {

@@ -1,17 +1,14 @@
 const app = document.getElementById('app');
 const name3d = document.getElementById('name3d');
 const heading = name3d.querySelector('h1');
-const shadows = name3d.querySelector('.shadows');
 const constrain = 50;
 const mainNameText = heading.textContent;
-const finalNameWidth = heading.getBoundingClientRect().width;
 const projects = document.getElementById('projects');
-const homeLink = document.querySelector('nav a[href="#home"]');
-const projectsLink = document.querySelector('nav a[href="#projects"]');
+const about = document.getElementById('about');
+const routeLinks = document.querySelectorAll('a[href="/home"], a[href="/projects"], a[href="/about"]');
 const headerName = document.getElementById('header-name');
 const headerNameText = headerName.textContent;
 
-name3d.style.width = `${finalNameWidth}px`;
 heading.textContent = '';
 name3d.classList.add('is-typing');
 let mainNameIndex = 0;
@@ -33,29 +30,33 @@ typeMainName();
 
 const showPage = (page) => {
 	const projectsPage = page === 'projects';
-	app.classList.toggle('page-hidden', projectsPage);
+	const aboutPage = page === 'about';
+	app.classList.toggle('page-hidden', projectsPage || aboutPage);
 	projects.classList.toggle('page-visible', projectsPage);
+	about.classList.toggle('page-visible', aboutPage);
 	document.body.scrollTop = 0;
 	document.documentElement.scrollTop = 0;
 };
 
-homeLink.addEventListener('click', (event) => {
-	event.preventDefault();
-	history.pushState({}, '', '#home');
-	showPage('home');
+routeLinks.forEach((link) => {
+	link.addEventListener('click', (event) => {
+		event.preventDefault();
+		const page = link.getAttribute('href').slice(1);
+		history.pushState({}, '', `/${page}`);
+		showPage(page);
+	});
 });
 
-projectsLink.addEventListener('click', (event) => {
-	event.preventDefault();
-	history.pushState({}, '', '#projects');
-	showPage('projects');
-});
+const getCurrentPage = () => {
+	const page = window.location.pathname.replace(/^\/+|\/+$/g, '');
+	return ['projects', 'about'].includes(page) ? page : 'home';
+};
 
 window.addEventListener('popstate', () => {
-	showPage(window.location.hash === '#projects' ? 'projects' : 'home');
+	showPage(getCurrentPage());
 });
 
-showPage(window.location.hash === '#projects' ? 'projects' : 'home');
+showPage(getCurrentPage());
 
 const moveHeroText = (event) => {
 	if (mainNameTyping) return;
@@ -71,12 +72,6 @@ const moveHeroText = (event) => {
 
 	name3d.style.transform = `perspective(400px) translate3d(${translateX}px, ${translateY}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 	heading.style.transform = `rotateZ(${rotateZ}deg)`;
-	shadows.style.transform = `rotateZ(${rotateZ}deg)`;
-
-	[...shadows.children].forEach((shadow, index) => {
-		shadow.style.transform = `translate3d(${-(rotateY * index) / 2}px, ${(rotateX * index) / 2}px, ${index / 2}px)`;
-		shadow.style.opacity = `${0.16 - index * 0.02}`;
-	});
 };
 
 app.addEventListener('mousemove', moveHeroText);
